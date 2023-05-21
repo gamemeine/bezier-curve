@@ -1,19 +1,23 @@
+#include <stdio.h>
 #include <GLFW/glfw3.h>
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-int main(void)
+#define WINDOW_NAME "Bezier curve"
+
+void draw()
 {
     GLFWwindow* window;
 
     /* Initialize the library */
     if (!glfwInit())
-        return -1;
+        return;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 480, WINDOW_NAME, NULL, NULL);
     if (!window)
     {
         glfwTerminate();
-        return -1;
+        return;
     }
 
     /* Make the window's context current */
@@ -25,6 +29,8 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        /* Draw shapes here */
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -33,5 +39,11 @@ int main(void)
     }
 
     glfwTerminate();
+}
+
+
+int main(void)
+{
+    draw();
     return 0;
 }
