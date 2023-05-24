@@ -6,9 +6,9 @@ double lerp(double a, double b, double factor) { return a + (b - a) * factor; }
 void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
     /* Clear buffer */
     for (int i = 0; i < width * height * 4; i += 4) {
-        buffer[i + 0] = 245; /* R */
-        buffer[i + 1] = 245; /* G */
-        buffer[i + 2] = 245; /* B */
+        buffer[i + 0] = 255; /* R */
+        buffer[i + 1] = 255; /* G */
+        buffer[i + 2] = 255; /* B */
         buffer[i + 3] = 255; /* A */
     }
 
@@ -45,7 +45,7 @@ void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
         int xpos = std::min((int)x, width);
         int ypos = std::min((int)y, height);
 
-        int radius = 8;
+        int radius = 4;
 
         for (int i = ypos - radius; i < ypos + radius; i++) {
             for (int j = xpos - radius; j < xpos + radius; j++) {
@@ -54,9 +54,9 @@ void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
 
                 int pixel = (i * width + j) * 4;
 
-                buffer[pixel + 0] = 157; /* R */
-                buffer[pixel + 1] = 166; /* G */
-                buffer[pixel + 2] = 93;  /* B */
+                buffer[pixel + 0] = 10;  /* R */
+                buffer[pixel + 1] = 10;  /* G */
+                buffer[pixel + 2] = 10;  /* B */
                 buffer[pixel + 3] = 255; /* A */
             }
         }

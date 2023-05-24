@@ -65,9 +65,9 @@ void draw_points() {
 
                 int pixel = (i * width + j) * 4;
 
-                pixels[pixel + 0] = 140; /* R */
-                pixels[pixel + 1] = 140; /* G */
-                pixels[pixel + 2] = 136; /* B */
+                pixels[pixel + 0] = 50;  /* R */
+                pixels[pixel + 1] = 50;  /* G */
+                pixels[pixel + 2] = 50;  /* B */
                 pixels[pixel + 3] = 255; /* A */
             }
         }
