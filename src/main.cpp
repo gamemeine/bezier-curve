@@ -54,7 +54,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void draw_points() {
     /* Draw controll points*/
     for (int p = 0; p < 5; p++) {
-        int radius = 25;
+        int radius = 32;
 
         for (int i = points[p][1] - radius; i < points[p][1] + radius; i++) {
             for (int j = points[p][0] - radius; j < points[p][0] + radius; j++) {
@@ -65,10 +65,10 @@ void draw_points() {
 
                 int pixel = (i * width + j) * 4;
 
-                pixels[pixel + 0] = 127;
-                pixels[pixel + 1] = 127;
-                pixels[pixel + 2] = 127;
-                pixels[pixel + 3] = 255;
+                pixels[pixel + 0] = 140; /* R */
+                pixels[pixel + 1] = 140; /* G */
+                pixels[pixel + 2] = 136; /* B */
+                pixels[pixel + 3] = 255; /* A */
             }
         }
     }
@@ -81,7 +81,7 @@ int draw() {
     if (!glfwInit()) return -1;
 
     /* Create a windowed mode window and its OpenGL contpoints[4].xt */
-    window = glfwCreateWindow(width, height, "Example", 0, 0);
+    window = glfwCreateWindow(width, height, "Bezier curve", 0, 0);
 
     /* Set window limits */
     glfwSetWindowSizeLimits(window, width, height, GLFW_DONT_CARE, GLFW_DONT_CARE);
@@ -117,7 +117,7 @@ int draw() {
         draw_points();
 
         /* Draw pixels here */
-        glDrawPixels(width, height, GL_RGBA, GL_BYTE, pixels);
+        glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

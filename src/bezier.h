@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <iostream>
-
 #ifndef _BEZIER_H
 #define _BEZIER_H
 
@@ -8,12 +5,15 @@ double lerp(double a, double b, double factor) { return a + (b - a) * factor; }
 
 void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
     /* Clear buffer */
-    for (int i = 0; i < width * height * 4; i++) {
-        buffer[i] = 0;
+    for (int i = 0; i < width * height * 4; i += 4) {
+        buffer[i + 0] = 245; /* R */
+        buffer[i + 1] = 245; /* G */
+        buffer[i + 2] = 245; /* B */
+        buffer[i + 3] = 255; /* A */
     }
 
     /* Draw curve */
-    for (double t = 0; t <= 1; t += 0.001f) {
+    for (double t = 0; t <= 1; t += 0.0001f) {
         double x1 = lerp(points[0][0], points[1][0], t);
         double x2 = lerp(points[1][0], points[2][0], t);
         double x3 = lerp(points[2][0], points[3][0], t);
@@ -45,7 +45,7 @@ void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
         int xpos = std::min((int)x, width);
         int ypos = std::min((int)y, height);
 
-        int radius = 5;
+        int radius = 8;
 
         for (int i = ypos - radius; i < ypos + radius; i++) {
             for (int j = xpos - radius; j < xpos + radius; j++) {
@@ -54,10 +54,10 @@ void bezier(uint8_t* buffer, int width, int height, int points[5][2]) {
 
                 int pixel = (i * width + j) * 4;
 
-                buffer[pixel + 0] = 100;
-                buffer[pixel + 1] = 0;
-                buffer[pixel + 2] = 0;
-                buffer[pixel + 3] = 255;
+                buffer[pixel + 0] = 157; /* R */
+                buffer[pixel + 1] = 166; /* G */
+                buffer[pixel + 2] = 93;  /* B */
+                buffer[pixel + 3] = 255; /* A */
             }
         }
     }
