@@ -118,7 +118,7 @@ int draw() {
         erase();
 
         /* Calculate Bezier curve */
-        for (float t = 0; t <= 1; t += 0.001f) bezier(pixels, width, height, points, t);
+        for (float t = 0; t <= 1; t += 0.00001f) bezier(pixels, width, height, points, t);
 
         /* Draw control points here */
         draw_points();

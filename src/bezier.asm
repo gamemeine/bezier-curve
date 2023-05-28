@@ -94,7 +94,17 @@ _bezier_calculate_y:
 
     cvtss2si    r9, xmm5        ; save y
 
+
 _bezier_draw:
+    mov         rcx, 10      ; load pen size
+
+_bezier_draw_loop:
+    cmp         r8d, DWORD [rbp - 12]   ; check if x < width
+    jge         _bezier_end             ; stop drawing if is greater
+
+    cmp         r9d, DWORD [rbp - 16]   ; check if y < height
+    jge         _bezier_end             ; stop drawing if is greater
+
     mov         eax, DWORD [rbp - 12]   ; load width
     mul         r9                      ; multiply by y
     add         rax, r8                 ; add x
@@ -102,9 +112,12 @@ _bezier_draw:
     add         rax, QWORD [rbp - 8]    ; add buffer address
 
     ; set pixel color
-    mov         BYTE [rax + 0], 100
+    mov         BYTE [rax + 0], 235
     mov         BYTE [rax + 1], 0
     mov         BYTE [rax + 2], 0
+
+    inc         r9                      ; increment y
+    loop _bezier_draw_loop
 
 _bezier_end:
     pop rbp
