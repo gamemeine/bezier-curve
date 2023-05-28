@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-#include "bezier.h"
-
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+extern "C" void bezier(uint8_t* buffer, unsigned int width, unsigned int height, unsigned int points[5][2], float t);
 
 int width = 640, height = 480;
 uint8_t* pixels;
 
-int points[5][2]{
-    {100, 500}, {300, 50}, {600, 900}, {800, 100}, {1200, 500},
+unsigned int points[5][2]{
+    {100, 500}, {300, 150}, {600, 700}, {800, 100}, {1200, 500},
 };
 
 int activePoint = 4;
@@ -54,7 +54,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void draw_points() {
     /* Draw controll points*/
     for (int p = 0; p < 5; p++) {
-        int radius = 32;
+        int radius = 16;
 
         for (int i = points[p][1] - radius; i < points[p][1] + radius; i++) {
             for (int j = points[p][0] - radius; j < points[p][0] + radius; j++) {
@@ -72,6 +72,10 @@ void draw_points() {
             }
         }
     }
+}
+
+void erase() {
+    for (int i = 0; i < width * height * 4; i++) pixels[i] = 255;
 }
 
 int draw() {
@@ -110,8 +114,11 @@ int draw() {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        /* Erase board */
+        erase();
+
         /* Calculate Bezier curve */
-        bezier(pixels, width, height, points);
+        for (float t = 0; t <= 1; t += 0.001f) bezier(pixels, width, height, points, t);
 
         /* Draw control points here */
         draw_points();
@@ -127,6 +134,7 @@ int draw() {
     }
 
     glfwTerminate();
+    return 0;
 }
 
 int main() { return draw(); }
