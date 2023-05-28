@@ -56,6 +56,8 @@ void draw_points() {
     for (int p = 0; p < 5; p++) {
         int radius = 16;
 
+        int acitvePadding = 6;
+
         for (int i = points[p][1] - radius; i < points[p][1] + radius; i++) {
             for (int j = points[p][0] - radius; j < points[p][0] + radius; j++) {
                 if (i < 0 || i >= height) continue;
@@ -69,6 +71,12 @@ void draw_points() {
                 pixels[pixel + 1] = 50;  /* G */
                 pixels[pixel + 2] = 50;  /* B */
                 pixels[pixel + 3] = 255; /* A */
+
+                if (activePoint == p && (j - points[p][0]) * (j - points[p][0]) + (i - points[p][1]) * (i - points[p][1]) < acitvePadding * acitvePadding) {
+                    pixels[pixel + 0] = 255; /* R */
+                    pixels[pixel + 1] = 255; /* G */
+                    pixels[pixel + 2] = 255; /* B */
+                }
             }
         }
     }
