@@ -4,7 +4,7 @@
 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-extern "C" void bezier(uint8_t* buffer, unsigned int width, unsigned int height, unsigned int points[5][2], float t);
+extern "C" void bezier(uint8_t* buffer, unsigned int width, unsigned int height, unsigned int points[5][2]);
 
 int width = 640, height = 480;
 uint8_t* pixels;
@@ -55,11 +55,10 @@ void draw_points() {
     /* Draw controll points*/
     for (int p = 0; p < 5; p++) {
         int radius = 16;
+        int activePadding = 6;
 
-        int acitvePadding = 6;
-
-        for (int i = points[p][1] - radius; i < points[p][1] + radius; i++) {
-            for (int j = points[p][0] - radius; j < points[p][0] + radius; j++) {
+        for (int i = points[p][1] - radius; i < (int)points[p][1] + radius; i++) {
+            for (int j = points[p][0] - radius; j < (int)points[p][0] + radius; j++) {
                 if (i < 0 || i >= height) continue;
                 if (j < 0 || j >= width) continue;
 
@@ -72,7 +71,7 @@ void draw_points() {
                 pixels[pixel + 2] = 50;  /* B */
                 pixels[pixel + 3] = 255; /* A */
 
-                if (activePoint == p && (j - points[p][0]) * (j - points[p][0]) + (i - points[p][1]) * (i - points[p][1]) < acitvePadding * acitvePadding) {
+                if (activePoint == p && (j - points[p][0]) * (j - points[p][0]) + (i - points[p][1]) * (i - points[p][1]) < activePadding * activePadding) {
                     pixels[pixel + 0] = 255; /* R */
                     pixels[pixel + 1] = 255; /* G */
                     pixels[pixel + 2] = 255; /* B */
@@ -126,7 +125,7 @@ int draw() {
         erase();
 
         /* Calculate Bezier curve */
-        for (float t = 0; t <= 1; t += 0.00001f) bezier(pixels, width, height, points, t);
+        bezier(pixels, width, height, points);
 
         /* Draw control points here */
         draw_points();

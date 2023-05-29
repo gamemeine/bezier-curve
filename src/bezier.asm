@@ -10,7 +10,7 @@ _bezier:
     mov     DWORD [rbp - 16], edx     ; store height
     mov     QWORD [rbp - 24], rcx     ; store points buffer
 
-    ; T is calculated outside the function
+    xorps    xmm0, xmm0          ; reset register
 
 _bezier_calculate_x:
     mov     rax, QWORD [rbp - 24]     ; get points buffer address
@@ -100,10 +100,10 @@ _bezier_draw:
 
 _bezier_draw_loop:
     cmp         r8d, DWORD [rbp - 12]   ; check if x < width
-    jge         _bezier_end             ; stop drawing if is greater
+    jge         _bezier_check_t             ; stop drawing if is greater
 
     cmp         r9d, DWORD [rbp - 16]   ; check if y < height
-    jge         _bezier_end             ; stop drawing if is greater
+    jge         _bezier_check_t             ; stop drawing if is greater
 
     mov         eax, DWORD [rbp - 12]   ; load width
     mul         r9                      ; multiply by y
@@ -118,6 +118,17 @@ _bezier_draw_loop:
 
     inc         r9                      ; increment y
     loop _bezier_draw_loop
+
+_bezier_check_t:
+    mov         eax, 1
+    cvtsi2ss    xmm15, eax
+    ucomiss     xmm15, xmm0
+
+    mov     eax, __float32__(0.000001)
+    movd    xmm15, eax
+    addss   xmm0, xmm15
+
+    jae      _bezier_calculate_x
 
 _bezier_end:
     pop rbp
