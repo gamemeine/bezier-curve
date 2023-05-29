@@ -1,3 +1,5 @@
+    %define t 0.0001
+
     section .text
     global _bezier
 
@@ -124,7 +126,7 @@ _bezier_check_t:
     cvtsi2ss    xmm15, eax
     ucomiss     xmm15, xmm0
 
-    mov     eax, __float32__(0.000001)
+    mov     eax, __float32__(t)
     movd    xmm15, eax
     addss   xmm0, xmm15
 
