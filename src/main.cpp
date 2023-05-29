@@ -2,14 +2,16 @@
 
 #include <iostream>
 
+#include "point.h"
+
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-extern "C" void bezier(uint8_t* buffer, unsigned int width, unsigned int height, unsigned int points[5][2]);
+extern "C" void bezier(uint8_t* buffer, unsigned int width, unsigned int height, Point points[]);
 
 int width = 640, height = 480;
 uint8_t* pixels;
 
-unsigned int points[5][2]{
+Point points[5] = {
     {100, 500}, {300, 150}, {600, 700}, {800, 100}, {1200, 500},
 };
 
@@ -38,8 +40,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         int pos_x = x * width / size_x;
         int pos_y = height - y * height / size_y;
 
-        points[activePoint][0] = pos_x;
-        points[activePoint][1] = pos_y;
+        points[activePoint].x = pos_x;
+        points[activePoint].y = pos_y;
     }
 }
 
@@ -57,12 +59,12 @@ void draw_points() {
         int radius = 16;
         int activePadding = 6;
 
-        for (int i = points[p][1] - radius; i < (int)points[p][1] + radius; i++) {
-            for (int j = points[p][0] - radius; j < (int)points[p][0] + radius; j++) {
+        for (int i = points[p].y - radius; i < (int)points[p].y + radius; i++) {
+            for (int j = points[p].x - radius; j < (int)points[p].x + radius; j++) {
                 if (i < 0 || i >= height) continue;
                 if (j < 0 || j >= width) continue;
 
-                if ((j - points[p][0]) * (j - points[p][0]) + (i - points[p][1]) * (i - points[p][1]) > radius * radius) continue;
+                if ((j - points[p].x) * (j - points[p].x) + (i - points[p].y) * (i - points[p].y) > radius * radius) continue;
 
                 int pixel = (i * width + j) * 4;
 
@@ -71,7 +73,7 @@ void draw_points() {
                 pixels[pixel + 2] = 50;  /* B */
                 pixels[pixel + 3] = 255; /* A */
 
-                if (activePoint == p && (j - points[p][0]) * (j - points[p][0]) + (i - points[p][1]) * (i - points[p][1]) < activePadding * activePadding) {
+                if (activePoint == p && (j - points[p].x) * (j - points[p].x) + (i - points[p].y) * (i - points[p].y) < activePadding * activePadding) {
                     pixels[pixel + 0] = 255; /* R */
                     pixels[pixel + 1] = 255; /* G */
                     pixels[pixel + 2] = 255; /* B */
